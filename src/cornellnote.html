@@ -56,6 +56,59 @@
         );
         link.click();
       }
+
+      function SaveAsJson() {
+        var fileName = document.getElementById("filename").value;
+        if (fileName.length == 0) {
+          fileName = "untitle";
+        }
+
+        var preData = {};
+        preData['title'] = document.getElementById("title").value;
+        preData['reduce'] = document.getElementById("reduce").value;
+        preData['record'] = document.getElementById("record").value;
+        preData['summary'] = document.getElementById("summary").value;
+
+        var jsonData = JSON.stringify(preData);
+
+        var link = document.createElement("a");
+        var file = new Blob([jsonData], { type: "text/plain" });
+        link.href = URL.createObjectURL(file);
+        link.download = fileName;
+        link.click();
+      }
+
+      function LoadJson() {
+        var loadFile = document.getElementById("load_filename");
+
+        var file = loadFile.files[0];
+        if (!file) {
+            return;
+        }
+
+        var fileName = document.getElementById("load_filename").value;
+        var ridx = fileName.lastIndexOf('\\');
+      
+        fileName = fileName.substring(ridx+1);
+        document.getElementById("filename").value = fileName;
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var contents = e.target.result;
+          displayLoadData(contents);
+        };
+        reader.readAsText(file);
+      }
+
+      function displayLoadData(contents) {
+        var noteData = JSON.parse(contents);
+        
+        dataList = ["title", "reduce", "record", "summary"];
+        dataList.forEach(function(e) {
+          document.getElementById(e).value = noteData[e];
+        });
+  
+      }
     </script>
   </head>
 
@@ -64,13 +117,18 @@
       <div class="row">
         <span class="cell">
           <div>
+              Load: 
+              <input type="file" id="load_filename" size="60" onChange="LoadJson()"/>
+          </div>
+          <div>
             FileName <input id="filename" size="60" />
             <INPUT
               type="button"
               value="Clear"
               onClick="clearText('filename')"
             />
-            <INPUT type="button" value="Save" onClick="SaveAsFile()" />
+            <INPUT type="button" value="Save" onClick="SaveAsJson()" />
+            <INPUT type="button" value="Save As Txt" onClick="SaveAsFile()" />
           </div>
         </span>
       </div>

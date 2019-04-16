@@ -1,0 +1,123 @@
+<html>
+  <head>
+    <title>Cornell Note</title>
+    <style>
+      .jb_table {
+        display: table;
+      }
+
+      .row {
+        border-radius: 10px;
+        display: table-row;
+      }
+
+      .cell {
+        display: table-cell;
+        vertical-align: top;
+      }
+
+      textarea {
+        background-color: #fcf3cf;
+      }
+    </style>
+    <script language="JavaScript">
+      // Date: 2019.04.16
+
+      var textareaList = ["filename", "title", "reduce", "record", "summary"];
+
+      function clearText(idOfTextArea) {
+        document.getElementById(idOfTextArea).value = "";
+      }
+
+      function SaveAsFile() {
+        var fileName = document.getElementById("title").value;
+        if (fileName.length == 0) {
+          fileName = "untitle";
+        }
+        fileName += ".txt";
+
+        var preData = "";
+        textareaList.forEach(function(e) {
+          preData += e + ":\n";
+          preData += document.getElementById(e).value;
+          preData += "\n\n";
+        });
+
+        var postData = preData.replace(/\<br\>/gi, "\n");
+
+        var link = document.createElement("a");
+        link.setAttribute("download", fileName);
+        link.setAttribute(
+          "href",
+          "data:" +
+            "application/[txt]" +
+            ";charset=utf-8," +
+            encodeURIComponent(postData)
+        );
+        link.click();
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="jb_table">
+      <div class="row">
+        <span class="cell">
+          <div>
+            FileName <input id="filename" size="60" />
+            <INPUT
+              type="button"
+              value="Clear"
+              onClick="clearText('filename')"
+            />
+            <INPUT type="button" value="Save" onClick="SaveAsFile()" />
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <br />
+    <div class="jb_table">
+      <div class="row">
+        <span class="cell">
+          <div><textarea rows="5" id="title" cols="123"></textarea></div>
+          <div>
+            <INPUT type="button" value="Clear" onClick="clearText('title')" />
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <div class="jb_table">
+      <div class="row">
+        <span class="cell">
+          <div>
+            <textarea id="reduce" rows="40" cols="20"></textarea>
+          </div>
+          <div>
+            <INPUT type="button" value="Clear" onClick="clearText('reduce')" />
+          </div>
+        </span>
+        <span class="cell">
+          <div>
+            <textarea id="record" rows="40" cols="100"></textarea>
+          </div>
+          <div>
+            <INPUT type="button" value="Clear" onClick="clearText('record')" />
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <div class="jb_table">
+      <div class="row">
+        <span class="cell">
+          <div><textarea rows="5" id="summary" cols="123"></textarea></div>
+        </span>
+      </div>
+      <div>
+        <INPUT type="button" value="Clear" onClick="clearText('summary')" />
+      </div>
+    </div>
+  </body>
+</html>

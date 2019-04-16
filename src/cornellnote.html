@@ -64,10 +64,10 @@
         }
 
         var preData = {};
-        preData['title'] = document.getElementById("title").value;
-        preData['reduce'] = document.getElementById("reduce").value;
-        preData['record'] = document.getElementById("record").value;
-        preData['summary'] = document.getElementById("summary").value;
+        preData["title"] = document.getElementById("title").value;
+        preData["reduce"] = document.getElementById("reduce").value;
+        preData["record"] = document.getElementById("record").value;
+        preData["summary"] = document.getElementById("summary").value;
 
         var jsonData = JSON.stringify(preData);
 
@@ -83,13 +83,13 @@
 
         var file = loadFile.files[0];
         if (!file) {
-            return;
+          return;
         }
 
         var fileName = document.getElementById("load_filename").value;
-        var ridx = fileName.lastIndexOf('\\');
-      
-        fileName = fileName.substring(ridx+1);
+        var ridx = fileName.lastIndexOf("\\");
+
+        fileName = fileName.substring(ridx + 1);
         document.getElementById("filename").value = fileName;
 
         var reader = new FileReader();
@@ -102,12 +102,11 @@
 
       function displayLoadData(contents) {
         var noteData = JSON.parse(contents);
-        
+
         dataList = ["title", "reduce", "record", "summary"];
         dataList.forEach(function(e) {
           document.getElementById(e).value = noteData[e];
         });
-  
       }
     </script>
   </head>
@@ -117,8 +116,13 @@
       <div class="row">
         <span class="cell">
           <div>
-              Load: 
-              <input type="file" id="load_filename" size="60" onChange="LoadJson()"/>
+            Load:
+            <input
+              type="file"
+              id="load_filename"
+              size="60"
+              onChange="LoadJson()"
+            />
           </div>
           <div>
             FileName <input id="filename" size="60" />

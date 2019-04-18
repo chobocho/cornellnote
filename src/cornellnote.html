@@ -23,7 +23,7 @@
     <script language="JavaScript">
       // Date: 2019.04.16
 
-      var textareaList = ["filename", "title", "reduce", "record", "summary"];
+      var textareaList = ["title", "reduce", "record", "summary"];
 
       function clearText(idOfTextArea) {
         document.getElementById(idOfTextArea).value = "";
@@ -64,10 +64,9 @@
         }
 
         var preData = {};
-        preData["title"] = document.getElementById("title").value;
-        preData["reduce"] = document.getElementById("reduce").value;
-        preData["record"] = document.getElementById("record").value;
-        preData["summary"] = document.getElementById("summary").value;
+        textareaList.forEach(function(e) {
+          preData[e] = document.getElementById(e).value;
+        });
 
         var jsonData = JSON.stringify(preData);
 
@@ -76,6 +75,18 @@
         link.href = URL.createObjectURL(file);
         link.download = fileName;
         link.click();
+      }
+
+      function isJsonFile(filename) {
+          var ridx = filename.lastIndexOf(".");
+          var extension = filename.substring(ridx + 1);
+
+          console.log(extension);
+
+          if (extension.length != 4  || extension.toLowerCase() != "json") {
+            return false;
+          }
+          return true;
       }
 
       function LoadJson() {
@@ -90,6 +101,11 @@
         var ridx = fileName.lastIndexOf("\\");
 
         fileName = fileName.substring(ridx + 1);
+
+        if (!isJsonFile(fileName)) {
+          return;
+        }
+
         document.getElementById("filename").value = fileName;
 
         var reader = new FileReader();

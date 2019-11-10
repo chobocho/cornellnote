@@ -67,7 +67,7 @@
 
         var preData = {};
         textareaList.forEach(function(e) {
-          preData[e] = document.getElementById(e).value;
+          preData[e] = encodeURI(document.getElementById(e).value);
         });
 
         var jsonData = JSON.stringify(preData);
@@ -121,11 +121,31 @@
       function displayLoadData(contents) {
         var noteData = JSON.parse(contents);
 
-        dataList = ["title", "reduce", "record", "summary"];
-        dataList.forEach(function(e) {
-          document.getElementById(e).value = noteData[e];
-        });
-      }
+              dataList = ["title", "reduce", "record", "summary"];
+              dataList.forEach(function(e) {
+              document.getElementById(e).value = decodeURI(noteData[e]);
+              });
+            }
+
+            function HideClearButtons() {
+              buttonList = ["titleButtons", "reduceButtons", "recordButtons", "summaryButtons"];
+
+              var hideBtn = document.getElementById("HideShowButton");
+              if (hideBtn.value == "Hide button") {
+                hideBtn.value = "Show button";
+              } else {
+                hideBtn.value = "Hide button";
+              }
+
+              buttonList.forEach(function(e) {
+                var btn = document.getElementById(e);
+                if (btn.style.display === "none") {
+                    btn.style.display = "block";
+                } else {
+                   btn.style.display = "none";
+                }
+              });
+            }
     </script>
   </head>
 
@@ -151,6 +171,12 @@
             />
             <INPUT type="button" value="Save" onClick="SaveAsJson()" />
             <INPUT type="button" value="Save As Txt" onClick="SaveAsFile()" />
+            <INPUT
+              type="button"
+              id="HideShowButton"
+              value="Hide button"
+              onClick="HideClearButtons()"
+            />
           </div>
         </span>
       </div>
@@ -161,7 +187,7 @@
       <div class="row">
         <span class="cell">
           <div><textarea rows="5" id="title" cols="123"></textarea></div>
-          <div>
+          <div id="titleButtons">
             <INPUT type="button" value="Clear" onClick="clearText('title')" />
           </div>
         </span>
@@ -174,7 +200,7 @@
           <div>
             <textarea id="reduce" rows="40" cols="20"></textarea>
           </div>
-          <div>
+          <div id="reduceButtons">
             <INPUT type="button" value="Clear" onClick="clearText('reduce')" />
           </div>
         </span>
@@ -182,7 +208,7 @@
           <div>
             <textarea id="record" rows="40" cols="100"></textarea>
           </div>
-          <div>
+          <div id="recordButtons">
             <INPUT type="button" value="Clear" onClick="clearText('record')" />
           </div>
         </span>
@@ -195,7 +221,7 @@
           <div><textarea rows="5" id="summary" cols="123"></textarea></div>
         </span>
       </div>
-      <div>
+      <div id="summaryButtons">
         <INPUT type="button" value="Clear" onClick="clearText('summary')" />
       </div>
     </div>
